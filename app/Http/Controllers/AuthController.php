@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,18 +20,16 @@ class AuthController extends Controller
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8',
             ]);
-
            $user =  DB::table('users')->insert([
                 'name' =>       $request->name,
                 'username' =>   $request->username,
                 'email' =>      $request->email,
                 'password' =>  bcrypt( $request->password),
             ]);
-// dd($user);
+
             if ($user) {
                 return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
             } else {
-                // Redirect back with an error message
                 return back()->with('error', 'Registration failed. Please try again.');
             }
         }
@@ -45,7 +44,7 @@ class AuthController extends Controller
             $creditials = $request->only('email', 'password');
             // dd($creditial);
             if (Auth::attempt($creditials)) {
-                return redirect()->route('dashboard');
+                return redirect()->route('dashboard')->with('success', 'Login Successful!');
             }
 
             return back()->with('error', 'Login not successful!');
@@ -58,7 +57,7 @@ class AuthController extends Controller
     public function logout() {
         Session::flush();
         Auth::logout();
-        return to_route('login');
+        return redirect()->route('login')->with('success', 'Logout is Successfull!');
     }
     
 }

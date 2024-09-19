@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-
+ 
     <!-- AlpineJS CDN -->
     <script
       defer
@@ -35,5 +35,10 @@
     @yield('content')
 
     @include('partials.footer')
+    <script>
+        function closeAlert() {
+            document.getElementById('alert').style.display = 'none';
+        }
+    </script>
     </body>
     </html>
